@@ -140,7 +140,7 @@ public class TestBasicExtractor {
         {"AARON, JOHN ","","","CLARKSVILLE, TN ","MEALS ","$20.39"},
         {"TOTAL ","","","","","$20.39"},
         {"AARON, JOSHUA, N ","","","WEST GROVE, PA ","MEALS ","$310.33"},
-        {"AARON , JOSHUA, N ","REGIONAL PULMONARY & SLEEPMEDICINE ","","WEST GROVE, PA ","SPEAKING FEES ","$4,700.00"},
+        {"AARON, JOSHUA, N ","REGIONAL PULMONARY & SLEEPMEDICINE ","","WEST GROVE, PA ","SPEAKING FEES ","$4,700.00"},
         {"TOTAL ","","","","","$5,010.33"},
         {"AARON, MAUREEN, M ","","","MARTINSVILLE, VA ","MEALS ","$193.67"},
         {"TOTAL ","","","","","$193.67"},
@@ -1799,6 +1799,7 @@ public class TestBasicExtractor {
                         269.875f, 12.75f, 790.5f, 561f);
         BasicExtractionAlgorithm bea = new BasicExtractionAlgorithm();
         Table table = bea.extract(page).get(0);
+        (new CSVWriter()).write(System.out, table);
         UtilsForTesting.assertTableEquals(table, EXPECTED_COLUMN_RECOGNITION);
     }
     
@@ -1818,8 +1819,8 @@ public class TestBasicExtractor {
         List<RectangularTextContainer> sixthRow = table.getRows().get(5);
         (new CSVWriter()).write(System.out, table);
 
-        assertTrue(sixthRow.get(0).getText().equals("VALSANGIACOMO BLANC"));
-        assertTrue(sixthRow.get(1).getText().equals("OFERNANDO JORGE "));
+        assertEquals("VALSANGIACOMO BLANC", sixthRow.get(0).getText());
+        assertEquals("OFERNANDO JORGE ", sixthRow.get(1).getText());
     }
 
     @Test
@@ -1861,8 +1862,8 @@ public class TestBasicExtractor {
         List<List<RectangularTextContainer>> rows = table.getRows();
         List<RectangularTextContainer> firstRow = rows.get(0);
         List<RectangularTextContainer> lastRow = rows.get(rows.size() - 1);
-        assertTrue(firstRow.get(0).getText().equals("Violent crime  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . "));
-        assertTrue(lastRow.get(lastRow.size() - 1).getText().equals("(X)"));
+        assertEquals("Violent crime  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . ", firstRow.get(0).getText());
+        assertEquals("(X)", lastRow.get(lastRow.size() - 1).getText());
     }
 
     // TODO add assertions
