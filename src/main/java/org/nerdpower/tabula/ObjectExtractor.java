@@ -11,7 +11,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -67,8 +66,6 @@ public class ObjectExtractor extends org.apache.pdfbox.pdfviewer.PageDrawer {
     private boolean extractRulingLines = true;
     private final PDDocument pdf_document;
     protected List pdf_document_pages;
-    private PDPage page;
-
 
     public ObjectExtractor(PDDocument pdf_document) throws IOException {
         this(pdf_document, null);
@@ -76,6 +73,7 @@ public class ObjectExtractor extends org.apache.pdfbox.pdfviewer.PageDrawer {
 
     public ObjectExtractor(PDDocument pdf_document, String password)
             throws IOException {
+        super();
         if (pdf_document.isEncrypted()) {
             try {
                 pdf_document
@@ -93,18 +91,6 @@ public class ObjectExtractor extends org.apache.pdfbox.pdfviewer.PageDrawer {
 
     }
 
-    private boolean useCustomQuickSort() {
-        // check if we need to use the custom quicksort algorithm as a
-        // workaround to the transitivity issue of TextPositionComparator:
-        // https://issues.apache.org/jira/browse/PDFBOX-1512
-        String[] versionComponents = System.getProperty("java.version").split(
-                "\\.");
-        int javaMajorVersion = Integer.parseInt(versionComponents[0]);
-        int javaMinorVersion = Integer.parseInt(versionComponents[1]);
-        boolean is16orLess = javaMajorVersion == 1 && javaMinorVersion <= 6;
-        String useLegacySort = System.getProperty("java.util.Arrays.useLegacyMergeSort");
-        return !is16orLess || (useLegacySort != null && useLegacySort.equals("true"));
-    }
 
     protected Page extractPage(Integer page_number) throws IOException {
 
@@ -123,12 +109,7 @@ public class ObjectExtractor extends org.apache.pdfbox.pdfviewer.PageDrawer {
 
         this.drawPage(p);
 
-        if (this.useCustomQuickSort()) {
-            QuickSort.sort(this.characters);
-        }
-        else {
-            Collections.sort(this.characters);
-        }
+        Utils.sort(this.characters);
 
         float w, h;
         int pageRotation = p.findRotation();
@@ -167,15 +148,14 @@ public class ObjectExtractor extends org.apache.pdfbox.pdfviewer.PageDrawer {
         PDStream contents = p.getContents();
         if (contents != null) {
             ensurePageSize();
-            this.processStream(p, p.findResources(), contents.getStream());/*,
-                    p.findCropBox(), p.findRotation());*/
+            this.processStream(p, p.findResources(), contents.getStream());
         }
     }
 
     private void ensurePageSize() {
         if (this.pageSize == null && this.page != null) {
-            PDRectangle mediaBox = this.page.findMediaBox();
-            this.pageSize = mediaBox == null ? null : mediaBox
+            PDRectangle cropBox = this.page.findCropBox();
+            this.pageSize = cropBox == null ? null : cropBox
                     .createDimension();
         }
     }
