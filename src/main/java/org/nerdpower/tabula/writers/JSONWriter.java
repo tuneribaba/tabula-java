@@ -5,8 +5,10 @@ import java.lang.reflect.Modifier;
 
 import org.nerdpower.tabula.Cell;
 import org.nerdpower.tabula.RectangularTextContainer;
+import org.nerdpower.tabula.Ruling;
 import org.nerdpower.tabula.Table;
 import org.nerdpower.tabula.TextChunk;
+import org.nerdpower.tabula.json.RulingSerializer;
 import org.nerdpower.tabula.json.TableSerializer;
 import org.nerdpower.tabula.json.TextChunkSerializer;
 
@@ -41,6 +43,7 @@ public class JSONWriter implements Writer {
            .registerTypeAdapter(RectangularTextContainer.class, new TextChunkSerializer())
            .registerTypeAdapter(Cell.class, new TextChunkSerializer())
            .registerTypeAdapter(TextChunk.class, new TextChunkSerializer())
+           .registerTypeAdapter(Ruling.class, new RulingSerializer())
            .create();
     }
     

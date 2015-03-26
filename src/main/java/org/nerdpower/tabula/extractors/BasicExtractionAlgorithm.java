@@ -67,45 +67,25 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
         // Build a list of Rulings from detected 'invisible separators' in the page
         List<Ruling> rulings = new ArrayList<Ruling>();
 
-        rulings.add(new Ruling(new Point2D.Float(page.getLeft(), page.getTop()), new Point2D.Float(page.getLeft(), page.getBottom())));
+        rulings.add(new Ruling(new Point2D.Float(page.getLeft(), page.getTop()), new Point2D.Float(page.getLeft(), page.getBottom()), false));
         for (float c: columns) {
-            rulings.add(new Ruling(new Point2D.Float(c, page.getTop()), new Point2D.Float(c, page.getBottom())));
+            rulings.add(new Ruling(new Point2D.Float(c, page.getTop()), new Point2D.Float(c, page.getBottom()), false));
         }
         
-        rulings.add(new Ruling(new Point2D.Float(page.getLeft(), lines.get(0).getTop()), new Point2D.Float(page.getRight(), lines.get(0).getTop())));
+        rulings.add(new Ruling(new Point2D.Float(page.getLeft(), lines.get(0).getTop()), new Point2D.Float(page.getRight(), lines.get(0).getTop()), false));
         for (Line l: lines.subList(1, lines.size())) {
-            rulings.add(new Ruling(new Point2D.Float(page.getLeft(), l.getTop()), new Point2D.Float(page.getRight(), l.getTop())));
+            rulings.add(new Ruling(new Point2D.Float(page.getLeft(), l.getTop()), new Point2D.Float(page.getRight(), l.getTop()), false));
         }
         rulings.add(new Ruling(new Point2D.Float(page.getLeft(), lines.get(lines.size() - 1).getBottom()), 
-                new Point2D.Float(page.getRight(), lines.get(lines.size() - 1).getBottom())));
+                new Point2D.Float(page.getRight(), lines.get(lines.size() - 1).getBottom()), false));
         
         SpreadsheetExtractionAlgorithm sea = new SpreadsheetExtractionAlgorithm();
-        return (List<Table>) sea.extract(page, rulings);
-//        
-//        
-//        Table table = new Table(page, this);
-//        
-//        for (int i = 0; i < lines.size(); i++) {
-//            Line line = lines.get(i);
-//            for (TextChunk tc: line.getTextElements()) {
-//
-//                if (tc.isSameChar(Line.WHITE_SPACE_CHARS)) {
-//                    continue;
-//                }
-//
-//                int j = 0;
-//                boolean found = false;
-//                for(; j < columns.size(); j++) {
-//                    if (tc.getLeft() <= columns.get(j)) {
-//                        found = true; 
-//                        break;
-//                    } 
-//                }
-//                table.add(tc, i, found ? j : columns.size());
-//            }
-//        }
-//        
-//        return Arrays.asList(new Table[] { table } );
+        List<? extends Table> tables = sea.extract(page, rulings);
+        for (Table t: tables) {
+            t.setExtractionAlgorithm(this);
+        }
+        return (List<Table>) tables;
+
     }
     
     @Override

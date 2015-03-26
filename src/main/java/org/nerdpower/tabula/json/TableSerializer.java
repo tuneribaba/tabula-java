@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.nerdpower.tabula.RectangularTextContainer;
+import org.nerdpower.tabula.Ruling;
 import org.nerdpower.tabula.Table;
 
 import com.google.gson.JsonArray;
@@ -34,6 +35,19 @@ public class TableSerializer implements JsonSerializer<Table> {
             jsonDataArray.add(jsonRowArray);
         }
         object.add("data", jsonDataArray);
+        
+        JsonObject rulings = new JsonObject();
+        JsonArray jsonVerticalRulingArray = new JsonArray(), jsonHorizontalRulingArray = new JsonArray();
+        for (Ruling r: table.getVerticalRulings()) {
+             jsonVerticalRulingArray.add(context.serialize(r));
+        }
+        
+        for (Ruling r: table.getHorizontalRulings()) {
+            jsonHorizontalRulingArray.add(context.serialize(r));
+        }
+        rulings.add("horizontal", context.serialize(jsonHorizontalRulingArray));
+        rulings.add("vertical", context.serialize(jsonVerticalRulingArray));
+        object.add("rulings", rulings);
         
         return object;
     }

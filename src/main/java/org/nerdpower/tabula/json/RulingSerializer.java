@@ -16,8 +16,13 @@ public class RulingSerializer implements JsonSerializer<Ruling> {
             JsonSerializationContext arg2) {
 
         JsonObject object = new JsonObject();
+        object.addProperty("x1", arg0.getX1());
+        object.addProperty("y1", arg0.getY1());
+        object.addProperty("x2", arg0.getX2());
+        object.addProperty("y2", arg0.getY2());
+        object.addProperty("visible", arg0.isGraphic());
         
-        return null;
+        return object;
     }
 
 }

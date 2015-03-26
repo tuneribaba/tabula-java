@@ -148,13 +148,12 @@ public class SpreadsheetExtractionAlgorithm implements ExtractionAlgorithm {
         List<Cell> cells = findCells(horizontalR, verticalR);
         List<Rectangle> spreadsheetAreas = findSpreadsheetsFromCells(cells);
         
-        List<TableWithRulingLines> spreadsheets = new ArrayList<TableWithRulingLines>();
+        List<Table> spreadsheets = new ArrayList<Table>();
         for (Rectangle area: spreadsheetAreas) {
 
             List<Cell> overlappingCells = new ArrayList<Cell>();
             for (Cell c: cells) {
                 if (c.intersects(area)) {
-
                     c.setTextElements(TextElement.mergeWords(page.getText(c)));
                     overlappingCells.add(c);
                 }
@@ -173,7 +172,7 @@ public class SpreadsheetExtractionAlgorithm implements ExtractionAlgorithm {
                 }
             }
                         
-            TableWithRulingLines t = new TableWithRulingLines(area, page, overlappingCells,
+            Table t = new Table(area, page, overlappingCells,
                     horizontalOverlappingRulings, verticalOverlappingRulings);
             
             t.setExtractionAlgorithm(this);

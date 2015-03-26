@@ -17,6 +17,8 @@ public class Ruling extends Line2D.Float {
     private static int PERPENDICULAR_PIXEL_EXPAND_AMOUNT = 2;
     private static int COLINEAR_OR_PARALLEL_PIXEL_EXPAND_AMOUNT = 1;
     private enum SOType { VERTICAL, HRIGHT, HLEFT };
+    private boolean isGraphic = true;
+
 
     public Ruling(float top, float left, float width, float height) {
         this(new Point2D.Float(left, top), new Point2D.Float(left+width, top+height));
@@ -33,9 +35,11 @@ public class Ruling extends Line2D.Float {
         else if (Utils.within(angle, 90, 1) || Utils.within(angle, 270, 1)) { // almost vertical
             this.setLine(this.x1, this.y1, this.x1, this.y2);
         }
-//        else {
-//            System.out.println("oblique: " + this + " ("+ this.getAngle() + ")");
-//        }
+    }
+    
+    public Ruling(Point2D p1, Point2D p2, boolean isGraphical) {
+        this(p1, p2);
+        this.isGraphic = isGraphical;
     }
 
     public boolean vertical() {
@@ -261,7 +265,14 @@ public class Ruling extends Line2D.Float {
         return angle;
     }
     
-    
+    /**
+     * Returns true if this Ruling is an actual, graphical, visible line
+     * (as opposed to white-space separation)
+     * @return
+     */
+    public boolean isGraphic() {
+        return isGraphic;
+    }
     
     @Override
     public String toString() {

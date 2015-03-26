@@ -261,7 +261,7 @@ public class Page extends Rectangle {
         groupedPoints = new ArrayList<List<Point2D>>();
         groupedPoints.add(new ArrayList<Point2D>(Arrays.asList(new Point2D[] { points.get(0) })));
         
-        for (Point2D p: points.subList(1, points.size() - 1)) {
+        for (Point2D p: points.subList(1, points.size())) {
             List<Point2D> last = groupedPoints.get(groupedPoints.size() - 1);
             if (Math.abs(p.getY() - last.get(0).getY()) < this.minCharHeight) {
                 groupedPoints.get(groupedPoints.size() - 1).add(p);
