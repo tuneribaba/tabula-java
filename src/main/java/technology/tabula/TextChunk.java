@@ -77,7 +77,7 @@ public class TextChunk extends RectangularTextContainer<TextElement> implements 
         for(TextElement te: this.getTextElements()){
             //TODO: we might need to loop over the textelement characters
             //      is it possible for a textelement to contain multiple characters?
-            
+
             // System.out.println(te.getText() + " is " + Character.getDirectionality(te.getText().charAt(0) ) + " " + directionalities.get(Character.getDirectionality(te.getText().charAt(0) )));
             if(buff.size() == 0){
                 buff.add(te);
@@ -89,7 +89,7 @@ public class TextChunk extends RectangularTextContainer<TextElement> implements 
                 String teDirectionality = directionalities.get(Character.getDirectionality(te.getText().charAt(0)));
 
                 if(teDirectionality == buffDirectionality || teDirectionality == "None") {
-                    if ( Character.getDirectionality(te.getText().charAt(0) ) == java.lang.Character.DIRECTIONALITY_WHITESPACE && (buffDirectionality != (isLtrDominant ? "LTR" : "RTL") ) ){
+                    if ( Character.getDirectionality(te.getText().charAt(0) ) == java.lang.Character.DIRECTIONALITY_WHITESPACE && (buffDirectionality == (isLtrDominant ? "RTL" : "LTR") ) ){
                         buff.add(0, te);
                     }else{
                         buff.add(te);
