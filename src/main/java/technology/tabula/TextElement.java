@@ -2,7 +2,6 @@ package technology.tabula;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
 
