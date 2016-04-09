@@ -528,14 +528,15 @@ public class TestSpreadsheetExtractor {
         assertEquals("من اين انت؟",                  table.getRows().get(1).get(0).getText());
         assertEquals("1234",                         table.getRows().get(2).get(0).getText());
         assertEquals("هل انت شباك؟",                 table.getRows().get(3).get(0).getText());
-        assertEquals("اسمي ymereJ في النجليزية",     table.getRows().get(3).get(1).getText()); // conjoined lam-alif gets missed
         assertEquals("انا من ولية كارولينا الشمال",  table.getRows().get(1).get(1).getText()); // conjoined lam-alif gets missed
+        assertEquals("اسمي Jeremy في النجليزية",     table.getRows().get(3).get(1).getText()); // conjoined lam-alif gets missed
+        assertEquals("عندي 47 قطط",                  table.getRows().get(2).get(1).getText()); // the real right answer is 47.
+        assertEquals("Jeremy is جرمي in Arabic",     table.getRows().get(4).get(0).getText()); // the real right answer is 47.
 
         // there are two remaining problems that are not yet addressed
         // - lam-alif ligature comes out just as a lam (https://en.wikipedia.org/wiki/Arabic_alphabet#Ligatures)
         //      this problem also exists in Evince
-        // - mixed-directionality text comes out wrong, but that's a pathological case that other things 
-        //      do incorrectly too.
+        // - diacritics (e.g. Arabic's tanwinً and probably Hebrew nekudot) are totally lost.
         // this should get fixed, but this is a good first stab at the problem.
 
         // these (commented-out) tests reflect the theoretical correct answer,
@@ -543,7 +544,6 @@ public class TestSpreadsheetExtractor {
         // assertEquals("مرحباً",                       table.getRows().get(0).get(0).getText()); // really ought to be ً, but this is forgiveable for now
         // assertEquals("اسمي Jeremy في الانجليزية",    table.getRows().get(3).get(1).getText()); // conjoined lam-alif gets missed
         // assertEquals("انا من ولاية كارولينا الشمال", table.getRows().get(1).get(1).getText()); // conjoined lam-alif gets missed
-        // assertEquals("عندي 47 قطط",                  table.getRows().get(2).get(1).getText());
 
     }
 
